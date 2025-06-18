@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - إدارة المحتوى</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .tab:hover {
+            background: #e9ecef;
+        }
+        
+        .tab.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .btn-danger:hover {
+            box-shadow: 0 5px 15px rgba(220,53,69,0.3);
+        }
+        
+        .content-item {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .content-item h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .content-item p {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>لوحة التحكم</h1>
+            <p>إدارة محتوى الموقع الإلكتروني</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showSection('content')">إدارة المحتوى</button>
+            <button class="tab" onclick="showSection('logos')">شعارات العملاء</button>
+            <button class="tab" onclick="showSection('preview')">معاينة الموقع</button>
+        </div>
+        
+        <div class="content">
+            <div id="alert-container"></div>
+            
+            <!-- قسم إدارة المحتوى -->
+            <div id="content-section" class="section active">
+                <h2>إدارة المحتوى</h2>
+                
+                <div class="stats-grid" id="stats-grid">
+                    <div class="loading">جاري تحميل الإحصائيات...</div>
+                </div>
+                
+                <form id="content-form">
+                    <div class="form-group">
+                        <label for="section">القسم:</label>
+                        <select id="section" required>
+                            <option value="">اختر القسم</option>
+                            <option value="header">الرأس</option>
+                            <option value="navigation">التنقل</option>
+                            <option value="clients">العملاء</option>
+                            <option value="statistics">الإحصائيات</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="key">المفتاح:</label>
+                        <input type="text" id="key" required placeholder="مثال: title, home, about">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="value">القيمة:</label>
+                        <textarea id="value" rows="3" required placeholder="النص المراد عرضه"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content_type">نوع المحتوى:</label>
+                        <select id="content_type">
+                            <option value="text">نص</option>
+                            <option value="image">صورة</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn">حفظ المحتوى</button>
+                    <button type="button" class="btn btn-danger" onclick="clearForm()">مسح النموذج</button>
+                </form>
+                
+                <div id="content-list">
+                    <div class="loading">جاري تحميل المحتوى...</div>
+                </div>
+            </div>
+            
+            <!-- قسم شعارات العملاء -->
+            <div id="logos-section" class="section">
+                <h2>إدارة شعارات العملاء</h2>
+                <p>قريباً...</p>
+            </div>
+            
+            <!-- قسم معاينة الموقع -->
+            <div id="preview-section" class="section">
+                <h2>معاينة الموقع</h2>
+                <div style="text-align: center; padding: 50px;">
+                    <a href="/" target="_blank" class="btn">فتح الموقع في نافذة جديدة</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/api';
+        let currentEditId = null;
+        
+        // تبديل الأقسام
+        function showSection(sectionName) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // إزالة الفئة النشطة من جميع التبويبات
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // إظهار القسم المحدد
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // تفعيل التبويب المحدد
+            event.target.classList.add('active');
+            
+            // تحميل البيانات حسب القسم
+            if (sectionName === 'content') {
+                loadContent();
+                loadStats();
+            } else if (sectionName === 'logos') {
+                loadLogos();
+            }
+        }
+        
+        // عرض التنبيهات
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            
+            alertContainer.innerHTML = `
+                <div class="alert ${alertClass}">
+                    ${message}
+                </div>
+            `;
+            
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
+        
+        // تحميل المحتوى
+        async function loadContent() {
+            try {
+                const response = await fetch(`${API_BASE}/content`);
+                const content = await response.json();
+                
+                const contentList = document.getElementById('content-list');
+                
+                if (content.length === 0) {
+                    contentList.innerHTML = '<p>لا يوجد محتوى حالياً</p>';
+                    return;
+                }
+                
+                contentList.innerHTML = content.map(item => `
+                    <div class="content-item">
+                        <h4>${item.section} - ${item.key}</h4>
+                        <p><strong>القيمة:</strong> ${item.value}</p>
+                        <p><strong>النوع:</strong> ${item.content_type}</p>
+                        <button class="btn" onclick="editContent(${item.id})">تعديل</button>
+                        <button class="btn btn-danger" onclick="deleteContent(${item.id})">حذف</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('خطأ في تحميل المحتوى:', error);
+                showAlert('خطأ في تحميل المحتوى', 'error');
+            }
+        }
+        
+        // تحميل الإحصائيات
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/content/statistics`);
+                const stats = await response.json();
+                
+                const statsGrid = document.getElementById('stats-grid');
+                
+                if (stats.length === 0) {
+                    statsGrid.innerHTML = '<div class="loading">لا توجد إحصائيات</div>';
+                    return;
+                }
+                
+                const statsMap = {};
+                stats.forEach(stat => {
+                    if (stat.key.includes('_label')) {
+                        const baseKey = stat.key.replace('_label', '');
+                        if (!statsMap[baseKey]) statsMap[baseKey] = {};
+                        statsMap[baseKey].label = stat.value;
+                    } else {
+                        if (!statsMap[stat.key]) statsMap[stat.key] = {};
+                        statsMap[stat.key].value = stat.value;
+                    }
+                });
+                
+                statsGrid.innerHTML = Object.entries(statsMap).map(([key, data]) => `
+                    <div class="stat-card">
+                        <h3>${data.value || '0'}</h3>
+                        <p>${data.label || key}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('خطأ في تحميل الإحصائيات:', error);
+            }
+        }
+        
+        // تحميل الشعارات
+        async function loadLogos() {
+            // سيتم تنفيذها لاحقاً
+        }
+        
+        // حفظ المحتوى
+        document.getElementById('content-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                section: document.getElementById('section').value,
+                key: document.getElementById('key').value,
+                value: document.getElementById('value').value,
+                content_type: document.getElementById('content_type').value
+            };
+            
+            try {
+                let response;
+                if (currentEditId) {
+                    response = await fetch(`${API_BASE}/content/${currentEditId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                } else {
+                    response = await fetch(`${API_BASE}/content`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                }
+                
+                if (response.ok) {
+                    showAlert(currentEditId ? 'تم تحديث المحتوى بنجاح' : 'تم حفظ المحتوى بنجاح');
+                    clearForm();
+                    loadContent();
+                    loadStats();
+                } else {
+                    throw new Error('فشل في حفظ المحتوى');
+                }
+            } catch (error) {
+                console.error('خطأ في حفظ المحتوى:', error);
+                showAlert('خطأ في حفظ المحتوى', 'error');
+            }
+        });
+        
+        // تعديل المحتوى
+        async function editContent(id) {
+            try {
+                const response = await fetch(`${API_BASE}/content`);
+                const content = await response.json();
+                const item = content.find(c => c.id === id);
+                
+                if (item) {
+                    document.getElementById('section').value = item.section;
+                    document.getElementById('key').value = item.key;
+                    document.getElementById('value').value = item.value;
+                    document.getElementById('content_type').value = item.content_type;
+                    currentEditId = id;
+                    
+                    document.querySelector('#content-form button[type="submit"]').textContent = 'تحديث المحتوى';
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل المحتوى للتعديل:', error);
+                showAlert('خطأ في تحميل المحتوى للتعديل', 'error');
+            }
+        }
+        
+        // حذف المحتوى
+        async function deleteContent(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا المحتوى؟')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/content/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showAlert('تم حذف المحتوى بنجاح');
+                    loadContent();
+                    loadStats();
+                } else {
+                    throw new Error('فشل في حذف المحتوى');
+                }
+            } catch (error) {
+                console.error('خطأ في حذف المحتوى:', error);
+                showAlert('خطأ في حذف المحتوى', 'error');
+            }
+        }
+        
+        // مسح النموذج
+        function clearForm() {
+            document.getElementById('content-form').reset();
+            currentEditId = null;
+            document.querySelector('#content-form button[type="submit"]').textContent = 'حفظ المحتوى';
+        }
+        
+        // تحميل البيانات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent();
+            loadStats();
+        });
+    </script>
+</body>
+</html>
+

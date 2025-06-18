@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Portfolio Homepage</title>
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            padding: 30px 0 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a.active {
+            text-decoration: underline;
+            color: #a28bfc;
+        }
+        .logo {
+            font-size: 48px;
+            color: #a28bfc;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .trusted {
+            font-size: 20px;
+            margin: 40px 0 10px;
+        }
+        .logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+        .logos img {
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px 20px;
+            border-top: 1px solid #a28bfc;
+            margin-top: 40px;
+        }
+        .stat {
+            color: #f0c674;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .stat span {
+            display: block;
+            font-size: 18px;
+            color: #f96c9d;
+        }
+        footer {
+            margin-top: 30px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">MA</div>
+        <nav>
+            <a class="active" href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Projects</a>
+            <a href="#">Let's Talk</a>
+        </nav>
+    </header>
+    <div class="trusted">Trusted By <strong>+200 Client</strong></div>
+    <div class="logos">
+        <!-- Dummy logos -->
+        <img src="https://via.placeholder.com/100x40?text=Logo1" alt="logo"/>
+        <img src="https://via.placeholder.com/100x40?text=Logo2" alt="logo"/>
+        <img src="https://via.placeholder.com/100x40?text=Logo3" alt="logo"/>
+        <img src="https://via.placeholder.com/100x40?text=Logo4" alt="logo"/>
+        <img src="https://via.placeholder.com/100x40?text=Logo5" alt="logo"/>
+        <img src="https://via.placeholder.com/100x40?text=Logo6" alt="logo"/>
+    </div>
+    <div class="stats">
+        <div class="stat">+3000 <span>Design</span></div>
+        <div class="stat">+200 <span>Client</span></div>
+        <div class="stat">+12 <span>Company</span></div>
+        <div class="stat">+7 <span>Years Of Experience</span></div>
+    </div>
+    <footer>
+        Bē &nbsp;&nbsp; in
+    </footer>
+</body>
+</html>
